@@ -1,0 +1,9 @@
+{
+  "name": "command-center",
+  "version": "1.0.0",
+  "description": "Install, layout, and mention-to-receipt workflow for musebook command-center commands. Identity provisioning is out of scope.",
+  "metadata": {
+    "openWorldHint": false,
+    "host": "netlify"
+  }
+}
