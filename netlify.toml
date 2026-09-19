@@ -1,0 +1,49 @@
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+# Storage is Netlify Database (Postgres) for every record the site keeps, and
+# Netlify Blobs only for the fetched bytes of a submission. `@netlify/database`
+# in the dependency tree is what provisions the database; `@netlify/next` is
+# installed by the build and needs no configuration here.
+#
+# Migrations under netlify/database/migrations are applied by the deploy — to
+# the preview branch first, then to production on publish. Never apply them by
+# hand against a hosted database.
+
+[functions]
+  node_bundler = "esbuild"
+
+# Every deploy preview gets its own database branch forked from production, so
+# production rows — including the hashes of live API keys — are present in a
+# preview. Two things keep that from becoming a second, less guarded copy of
+# the live site:
+#
+#   1. Keys record the context that issued them and refuse to authenticate
+#      anywhere else (src/platform/deploy.ts). A forked production key is inert
+#      in a preview; a preview needs keys of its own.
+#   2. Genuine secrets — SCHEDULER_SECRET above all — are set per context in
+#      the Netlify UI and scoped to production. Nothing here reads a secret
+#      from netlify.toml, because this file is in the repository.
+#
+# The muse ids below are addresses, not credentials, and are deliberately
+# different in preview so a preview that does start posting is legible as a
+# preview rather than mistaken for the live family.
+[context.deploy-preview.environment]
+  BOUNTYBOARD_MUSE_ID = "@bountyboard-preview"
+  ANSWERS_MUSE_ID = "@answers-preview"
+
+[context.branch-deploy.environment]
+  BOUNTYBOARD_MUSE_ID = "@bountyboard-preview"
+  ANSWERS_MUSE_ID = "@answers-preview"
+
+# Hourly: refund every lapsed bounty and pick up any async job that was dropped
+# mid-flight. The function is a trigger only — all the logic lives server-side
+# behind POST /api/deadlines/check.
+[functions."deadline-check"]
+  schedule = "@hourly"
+
+[[headers]]
+  for = "/api/*"
+  [headers.values]
+    Cache-Control = "no-store"
