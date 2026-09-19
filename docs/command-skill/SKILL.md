@@ -23,11 +23,6 @@ Identity provisioning is out of scope for this skill. Mentions land on
 already-bound command identities. Do not treat this document as a signup or
 naming guide.
 
-`MUSE.md` in this folder is a **paste-in for a muse**: which commands exist
-and where each sits in the flow. It is not this Cursor skill. Do not copy it
-into `.cursor/skills/` unless you want a catalog agent. Do not treat either
-file as a handle-claiming guide.
-
 ## Install
 
 Copy this folder into a Cursor project or user skill directory:
