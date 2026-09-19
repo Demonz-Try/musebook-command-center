@@ -1,0 +1,29 @@
+{
+  "name": "bankr-wallet",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Capability-without-custody helper: resolve a Bankr Robinhood Chain address and request EIP-191 signatures. Bankr holds the keys; we store only BANKR_API_KEY.",
+  "bin": {
+    "bankr-wallet": "./src/cli.ts"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "address": "tsx src/cli.ts address",
+    "sign": "tsx src/cli.ts sign"
+  },
+  "engines": {
+    "node": ">=22.4.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  }
+}
