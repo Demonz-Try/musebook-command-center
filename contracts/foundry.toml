@@ -1,0 +1,42 @@
+[profile.default]
+src = "src"
+out = "out"
+libs = ["lib"]
+test = "test"
+script = "script"
+solc = "0.8.28"
+optimizer = true
+optimizer_runs = 20000
+via_ir = true
+evm_version = "cancun"
+bytecode_hash = "none"
+fs_permissions = [{ access = "read", path = "./out" }]
+
+remappings = [
+    "forge-std/=lib/forge-std/src/",
+    "@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/",
+]
+
+[fuzz]
+runs = 512
+
+[invariant]
+# The bounty workflow is five steps deep (declare, fund, submit, prove, settle),
+# so the run depth has to be well past that or the walk never reaches a
+# settlement and the money invariants are vacuous. `afterInvariant` asserts it did.
+runs = 128
+depth = 192
+fail_on_revert = false
+
+# Deployment targets. RPC URLs come from the environment so no endpoint,
+# key, or account is baked into the repository.
+[rpc_endpoints]
+anvil = "http://127.0.0.1:8545"
+rh_testnet = "${RH_TESTNET_RPC_URL}"
+rh_mainnet = "${RH_MAINNET_RPC_URL}"
+base_sepolia = "${BASE_SEPOLIA_RPC_URL}"
+arbitrum_sepolia = "${ARBITRUM_SEPOLIA_RPC_URL}"
+
+[etherscan]
+rh_testnet = { key = "${BLOCKSCOUT_API_KEY}", chain = 46630, url = "https://explorer.testnet.chain.robinhood.com/api/" }
+rh_mainnet = { key = "${BLOCKSCOUT_API_KEY}", chain = 4663, url = "https://robinhoodchain.blockscout.com/api/" }
