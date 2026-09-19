@@ -97,7 +97,7 @@ export function resolveVerb(
 /**
  * Splits a body on unescaped pipes.
  *
- * `\\|` is a literal pipe and `\\\\` a literal backslash; there are no other
+ * `\|` is a literal pipe and `\\` a literal backslash; there are no other
  * escapes. `||` is an explicitly empty field, which is not the same as a
  * missing trailing one — so trailing empties are dropped before arity is
  * checked, and interior ones are kept.
